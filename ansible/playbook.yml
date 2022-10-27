@@ -1,0 +1,60 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: true
+
+  tasks:
+    - name: Install sources
+      ansible.builtin.package: 
+        name: 
+          - centos-release-scl
+          - centos-release-scl-rh
+        state: present
+
+    - name: Install packages
+      ansible.builtin.package:
+        name:  
+          - zlib-devel
+          - libffi-devel
+          - bzip2-devel
+          - openssl-devel
+          - ncurses-devel
+          - sqlite-devel
+          - readline-devel
+          - tk-devel
+          - gdbm-devel
+          - libuuid-devel
+          - xz-devel
+          - devtoolset-7
+          - epel-release
+          - cmake3
+        state: present             
+    
+    - name: Download python3
+      ansible.builtin.get_url:
+        url: "https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz"
+        dest: /tmp/
+
+    - name: Download extract Python3
+      ansible.builtin.unarchive:
+        src: /tmp/Python-3.7.3.tgz
+        dest: /tmp/
+    - name: build python3
+      ansible.builtin.shell:
+        cmd: /vagrant/ansible/build.sh
+   
+    - name: Upgrade PIP
+      ansible.builtin.shell:
+        cmd: python3 -m pip install --upgrade pip --user
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name: 
+          - matplotlib
+          - pdf2image
+          - Pillow
+          - pymongo==3.12.1
+
+    # - name: 
+
+    # make mongo username and password admin:admin

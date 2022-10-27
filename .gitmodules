@@ -1,0 +1,3 @@
+[submodule "localdb-tools"]
+	path = localdb-tools
+	url = https://gitlab.cern.ch/YARR/localdb-tools.git
